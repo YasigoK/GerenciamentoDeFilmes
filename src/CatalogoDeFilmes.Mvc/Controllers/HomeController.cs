@@ -1,4 +1,4 @@
-using CatalogoDeFilmes.Mvc.Models;
+using CatalogoDeFilmes.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

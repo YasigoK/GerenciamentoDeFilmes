@@ -1,15 +1,23 @@
+using CatalogoDeFilmes.Data.Contexts;
+using CatalogoDeFilmes.Application.Services;
+using CatalogoDeFilmes.Application.Services.Interfaces;
+using CatalogoDeFilmes.Data.Repositories.Interfaces;
+using CatalogoDeFilmes.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IDiretorService, DiretorService>();
+builder.Services.AddScoped<IDiretoresRepository, DiretoresRepository>();
+builder.Services.AddDbContext<CatalogoConext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BdConnection"));
+});
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

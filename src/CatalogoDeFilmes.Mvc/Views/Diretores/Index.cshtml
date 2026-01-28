@@ -1,0 +1,39 @@
+﻿@using CatalogoDeFilmes.Application.Models;
+@model List<DiretoresModel>;
+
+@{
+    ViewData["Title"] = "Diretores";
+}
+<div class="d-flex justify-content-between align-items-center mb-5">
+
+@* Area para criacao de diretores *@
+
+
+</div>
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <table class="table table-info table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">Primeiro nome</th>
+                <th scope="col" class="text-center">Segundo nome </th>
+                <th scope="col" class="text-center">Data de nascimento</th>
+                <th scope="col" class="text-center">Nacionalidade</th>
+                <th scope="col" class="text-center">Sexo</th>
+            </tr>
+        </thead>
+        <tbody class="table-dark">
+
+            @foreach (var diretores in Model)
+            {
+                <tr>
+                    <td >@diretores.PrimeiroNome</td>
+                    <td >@diretores.Sobrenome</td>
+                    <td class="align-contentpcenter">@diretores.DataDeNascimento</td>
+                    <td class="align-contentpcenter">@diretores.Nacionalidade</td>
+                    <td class="align-contentpcenter">@diretores.Sexo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
