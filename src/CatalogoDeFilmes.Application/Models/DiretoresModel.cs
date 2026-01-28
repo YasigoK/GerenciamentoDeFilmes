@@ -32,7 +32,9 @@ public class DiretoresModel : EntityBase
             return null;
 
         return new DiretoresModel
+
         {
+            Id = entity.Id,
             PrimeiroNome = entity.PrimeiroNome,
             Sobrenome = entity.Sobrenome,
             DataDeNascimento = entity.DataDeNascimento,

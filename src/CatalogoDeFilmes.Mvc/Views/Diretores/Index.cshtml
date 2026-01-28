@@ -6,34 +6,27 @@
 }
 <div class="d-flex justify-content-between align-items-center mb-5">
 
-@* Area para criacao de diretores *@
-
-
+        @* Area para criacao de diretores *@
 </div>
-<div class="d-flex justify-content-between align-items-center mb-5">
-    <table class="table table-info table-hover">
-        <thead>
-            <tr>
-                <th scope="col" class="text-center">Primeiro nome</th>
-                <th scope="col" class="text-center">Segundo nome </th>
-                <th scope="col" class="text-center">Data de nascimento</th>
-                <th scope="col" class="text-center">Nacionalidade</th>
-                <th scope="col" class="text-center">Sexo</th>
-            </tr>
-        </thead>
-        <tbody class="table-dark">
 
-            @foreach (var diretores in Model)
-            {
-                <tr>
-                    <td >@diretores.PrimeiroNome</td>
-                    <td >@diretores.Sobrenome</td>
-                    <td class="align-contentpcenter">@diretores.DataDeNascimento</td>
-                    <td class="align-contentpcenter">@diretores.Nacionalidade</td>
-                    <td class="align-contentpcenter">@diretores.Sexo</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+        @foreach(var diretor in Model)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">@diretor.Sobrenome</h2>
+                        <h4 class="card-title">@diretor.PrimeiroNome</h4>
+                        <p class="card-text">@diretor.Nacionalidade</p>
+                        <a href="#" class="btn btn-primary">Detalhes</a>
+                        <a href="#" class="btn btn-warning">Editar</a>
+                        <a href="#" class="btn btn-danger">Excluir</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
 
 </div>
