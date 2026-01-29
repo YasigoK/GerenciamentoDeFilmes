@@ -20,4 +20,13 @@ public class DiretoresEntity:EntityBase
         Nacionalidade = nacionalidade;
         Sexo = sexo;
     }
+    public void Atualizar( string nome1,string nome2, DateTime nascimento, string nacionalidade, char sexo) 
+    {
+        PrimeiroNome = nome1;
+        Sobrenome = nome2;
+        DataDeNascimento = nascimento; 
+        Nacionalidade = nacionalidade;
+        Sexo = sexo;
+    }
+
 }

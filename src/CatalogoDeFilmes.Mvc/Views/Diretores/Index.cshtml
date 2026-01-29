@@ -4,29 +4,37 @@
 @{
     ViewData["Title"] = "Diretores";
 }
-<div class="d-flex justify-content-between align-items-center mb-5">
+<div class="d-flex justify-content-end mb-5">
 
-        @* Area para criacao de diretores *@
+    <a class="btn btn-success" type="submit" asp-controller="Diretores" asp-action="CadastrarDiretor"><i class="bi bi-person-add"></i> Cadastrar</i> </a>
+
 </div>
 
 
-<div class="d-flex justify-content-between align-items-center mb-5">
-        @foreach(var diretor in Model)
-        {
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">@diretor.Sobrenome</h2>
-                        <h4 class="card-title">@diretor.PrimeiroNome</h4>
-                        <p class="card-text">@diretor.Nacionalidade</p>
-                        <a href="#" class="btn btn-primary">Detalhes</a>
-                        <a href="#" class="btn btn-warning">Editar</a>
-                        <a href="#" class="btn btn-danger">Excluir</a>
+
+<div class="row">
+    @foreach(var diretor in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card text-white bg-dark mb-3 shadow-lg rounded h-100">
+                <div class="card-body mb-2">
+                    <a class="btn btn-primary float-end" alt="Detalhes" asp-controller="Diretores" asp-action="ExibirDetalhes" asp-route-id="@diretor.Id"><i class="bi bi-info-circle"></i></a>
+                    <h4 class="card-title">@diretor.PrimeiroNome</h4>
+                    <h5 class="card-subtitle ">@diretor.Sobrenome</h5>
+
+                    <div class="row mt-auto d-flex  gy-3 list-group">
+                        
+                        <a class="btn btn-warning" asp-controller="Diretores" asp-action="EditarDiretor" asp-route-id="@diretor.Id"><i class="bi bi-pen"></i></a>
+                        <a class="btn btn-danger" asp-controller="Diretores" asp-action="ExcluirDiretor" asp-route-id="@diretor.Id"><i class="bi bi-trash2"></i></a>
                     </div>
+
+
                 </div>
+
             </div>
-        }
-
-
+        </div>
+    }
 
 </div>
+
+

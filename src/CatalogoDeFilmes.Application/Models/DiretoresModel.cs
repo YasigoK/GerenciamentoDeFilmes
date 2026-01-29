@@ -1,4 +1,5 @@
 ﻿using CatalogoDeFilmes.Domain.Entities;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CatalogoDeFilmes.Application.Models;
@@ -6,23 +7,27 @@ namespace CatalogoDeFilmes.Application.Models;
 public class DiretoresModel : EntityBase
 {
 
-    [Display(Name="Digite o nome")]
-    [Required(ErrorMessage ="Campo obrigatório, Nome necessário")]
+    [DisplayName("Digite o nome")]
+    [MaxLength(70)]
+    [Required(ErrorMessage ="Campo obrigatório, entre com um nome de até 70 caracteres")]
     public string PrimeiroNome { get;  set; }
 
-    [Display(Name ="Digite o Sobrenome")]
-    [Required(ErrorMessage ="Campo obigatórios, Sobrenome necessário")]
+    [DisplayName("Digite o Sobrenome")]
+    [MaxLength(70)]
+    [Required(ErrorMessage = "Campo obrigatório, entre com um sobrenome de até 70 caracteres")]
     public string Sobrenome { get;  set; }
 
-    [Display(Name = "Digite a data de nascimento ")]
+    [DisplayName("Digite a data de nascimento ")]
     [Required(ErrorMessage = "Campo obigatórios, Data de nascimento obrigatória")]
+    [DataType(DataType.Date)]
     public DateTime DataDeNascimento { get;  set; }
 
-    [Display(Name = "Digite a nacionalidade ")]
-    [Required(ErrorMessage = "Campo obigatórios, digite o pais de origem.")]
+    [DisplayName("Digite a nacionalidade ")]
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Campo obigatórios, digite o pais de origem de até 100 caractéres.")]
     public string Nacionalidade { get;  set; }
 
-    [Display(Name = "Digite o sexo")]
+    [DisplayName("Digite o sexo")]
     [Required(ErrorMessage = "Campo obigatórios, digite o sexo")]
     public char Sexo { get;  set; }
 

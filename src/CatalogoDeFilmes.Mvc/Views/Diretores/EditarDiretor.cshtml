@@ -1,0 +1,69 @@
+﻿@using CatalogoDeFilmes.Application.Models;
+@model DiretoresModel;
+
+
+@{
+    ViewData["Title"] = "Atualizar Diretor";
+}
+
+<div class="container bg-dark p-5 rounded-5">
+
+    <div class="mb-5 text-center ">
+
+        <h1 class="text-light">Editar Diretor</h1>
+
+    </div>
+
+    <form method="post" asp-controller="Diretores" asp-action="EditarDiretor">
+        <input type="hidden" asp-for="Id"/>
+
+        <!--NOME-->
+        <div class="mb-3">
+            <label for="PrimeiroNome" class="form-label text-light">Nome:</label>
+            <input type="text" class="form-control" id="PrimeiroNome" asp-for="PrimeiroNome" placeholder="Nome do(a) diretor(a) :">
+            <span asp-validation-for="PrimeiroNome" class="text-danger"></span>
+        </div>
+
+        <!--SOBRENOME-->
+        <div class="mb-3">
+            <label for="Sobrenome" class="form-label text-light">Sobrenome do(a) diretor(a) </label>
+            <input type="text" class="form-control" id="Sobrenome" asp-for="Sobrenome">
+            <span asp-validation-for="Sobrenome" class="text-danger"></span>
+        </div>
+
+        <!--DATANASCIMENTO-->
+        <div class="mb-3">
+            <label for="DataDeNascimento" class="form-label text-light">Data de nascimento </label>
+            <input type="date" class="form-control" id="DataDeNascimento" asp-for="DataDeNascimento">
+            <span asp-validation-for="DataDeNascimento" class="text-danger"></span>
+        </div>
+
+        <!--NASCIONALIDADE-->
+        <div class="mb-3">
+            <label for="Nacionalidade" class="form-label text-light">País de origem do(a) diretor(a)</label>
+            <input type="text" class="form-control" id="Description" asp-for="Nacionalidade" placeholder="País de origem :">
+            <span asp-validation-for="Nacionalidade" class="text-danger"></span>
+        </div>
+
+        <!--SEXO DROP-->
+        <div class="mb-3">
+            <label for="Sexo" class="form-label text-light">Sexo do(a) diretor(a)</label>
+            @* <input type="text" class="form-control" id="Description" asp-for="Sexo" placeholder=""> *@
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="Sexo" id="Sexo" required>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+                <option value="O">Outro</option>
+            </select>
+            <span asp-validation-for="Sexo" class="text-danger"></span>
+        </div>
+
+        <!--BOTÃO-->
+        <div class="d-flex gap-5 mt-5">
+            <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button>
+            <a class="btn btn-primary w-50" asp-controller="Diretores" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
+
+        </div>
+
+
+    </form>
+</div>

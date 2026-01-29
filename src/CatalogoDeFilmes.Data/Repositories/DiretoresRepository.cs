@@ -18,4 +18,17 @@ public class DiretoresRepository : IDiretoresRepository
     {
         return await _db.Diretores.AsNoTracking().ToListAsync();
     }
+    public async Task Adicionar(DiretoresEntity diretores)
+    {
+        await _db.Diretores.AddAsync(diretores);
+    }
+    
+    public async Task Salvar()
+    {
+        await _db.SaveChangesAsync();
+    }
+    public async Task<DiretoresEntity> GetId(int id)
+    {
+        return await _db.Diretores.FirstOrDefaultAsync(x => x.Id == id);
+    }
 }
