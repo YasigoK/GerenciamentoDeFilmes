@@ -15,14 +15,19 @@ Sexo char not null
 
 --======================CRIANDO TABELA FILHA===================================
 
-create table livro(
-	IdLivro int identity(1,1) primary key not null,
-	NomeLivro varchar(50) not null,
+
+create table Filmes(
+	Id int identity(1,1) primary key not null,
+	NomeFilme varchar(150) not null,
 	Genero varchar(50) not null,
-	DataPub date not null,
-	autor_Id_fk int not null,
-	constraint Fk_livro_autor 
-	foreign key (autor_Id_fk) references autor(Id)
+	DiretorId_Fk int not null,
+	DataLancamento date not null,
+	Duracao int not null,
+	Imagem varchar(200) not null,
+	Nota decimal(2,1) not null,
+	
+	constraint Fk_Filmes_Diretor 
+	foreign key (DiretorId_Fk) references Diretores(Id)
 );
 
 
@@ -37,3 +42,8 @@ values
 
 
 --======================INSERINDO DADOS FILHO ===================================
+insert into Filmes (NomeFilme,Genero,DiretorId_Fk,DataLancamento,Duracao,Imagem,Nota)
+values
+('Avatar: Fogo e Cinzas','Aventura',2,'2025-12-18','197','avatarFogoECinzas.jpg',4.2),
+('Alien, o 8 passageiro','Ficção',3,'1979-08-13','116','alien8pass.jpg',4.5),
+('De volta para o futuro','Ficção',4,'1985-12-25','116','deVoltaFuturo.jpg',8.5);

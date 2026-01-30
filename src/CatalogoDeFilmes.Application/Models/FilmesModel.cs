@@ -1,7 +1,6 @@
 ﻿using CatalogoDeFilmes.Domain.Entities;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
 
 namespace CatalogoDeFilmes.Application.Models;
 
@@ -17,7 +16,7 @@ public class FilmesModel : EntityBase
 
     [DisplayName("Digite o diretor")]
     [Required(ErrorMessage = "Campo obrigatório, escolha o diretor")]
-    public int DiretorId_fk { get;  set; }
+    public int DiretorId_Fk { get;  set; }
 
     [DisplayName("Digite a data de lançamento")]
     [Required(ErrorMessage = "Campo obrigatório, Data de Lançamento requirida")]
@@ -35,6 +34,10 @@ public class FilmesModel : EntityBase
     [Range(1,10)]
     public decimal Nota { get;  set; }
 
+    public string DiretorNome { get; set; }
+
+
+
     public static FilmesModel Map(FilmesEntity filme)
     {
         if (filme == null)
@@ -45,11 +48,14 @@ public class FilmesModel : EntityBase
             Id = filme.Id,
             NomeFilme = filme.NomeFilme,
             Genero = filme.Genero,
-            DiretorId_fk = filme.DiretorId_fk,
+            DiretorId_Fk = filme.Diretor.Id,
             DataLancamento = filme.DataLancamento,
             Duracao = filme.Duracao,
             Imagem = filme.Imagem,
-            Nota = filme.Nota
+            Nota = filme.Nota,
+            DiretorNome = filme.Diretor.PrimeiroNome
         };
     }
+
+
 }

@@ -1,0 +1,49 @@
+﻿@using CatalogoDeFilmes.Application.Models
+@model List<FilmesModel>
+
+
+@{
+    ViewData["Title"] = "Filmes";
+}
+<div class="d-flex justify-content-end mb-5">
+
+    <a class="btn btn-success" type="submit" asp-controller="Diretores" asp-action="CadastrarFilme"><i class="bi bi-person-add"></i> Cadastrar</i> </a>
+
+</div>
+<link rel="stylesheet" href="~/css/filmes.css" asp-append-version="true" />
+
+
+<div class="row" style="flex-direction: column">
+    @foreach (var filmes in Model)
+    {
+        <div class="mb-4">
+            <div class="card text-white bg-dark mb-3 shadow-lg rounded h-100" style="display: flex; flex-direction: row;  width: 100%;  border: 1px solid; border-radius: 12px !important; overflow: hidden;flex-wrap: wrap;">
+                <img src="~/imgs/cartazes/@filmes.Imagem" class="card-img-top" alt="imagem" style="width: 30%;   object-fit: cover;  max-width: 100%;   margin: 0 auto;   min-width: 226px " />
+                <div class="card-body  bg-dark " style="display: flex;  flex-direction: column; min-width: 306px;">
+                    <h4 class="card-title">@filmes.NomeFilme</h4>
+                    <h6 class="card-subtitle "><strong>DIRETOR : </strong>@filmes.DiretorNome</h6>
+                    <br />
+                    <h6 class="card-subtitle "><strong>GÊNERO : </strong>@filmes.Genero</h6>
+                    <br />
+                    <p class="card-text"><strong>DATA DE LANÇAMENTO :</strong> @filmes.DataLancamento.ToString("dd/MM/yyyy")</p>
+                    <p class="card-text"><strong>DURAÇÃO : </strong>@filmes.Duracao minutos</p>
+                    <p class="card-text"><strong>NOTA :</strong> @filmes.Nota <br /></p>
+
+                    <p class="card-text text-warning">
+                        @Html.Raw(string.Join(" ", Enumerable.Repeat("<i class='bi bi-star-fill'></i>", (int)filmes.Nota)))
+                    </p>
+
+                    <div class="row mt-auto d-flex  gy-3 list-group">
+
+                        <a class="btn btn-warning" asp-controller="Filmes" asp-action="EditarFilme" asp-route-id="@filmes.Id"><i class="bi bi-pen"></i></a>
+                        <a class="btn btn-danger" asp-controller="Filmes" asp-action="EditarFilme" asp-route-id="@filmes.Id"><i class="bi bi-trash2"></i></a>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>

@@ -1,5 +1,4 @@
-﻿using AspNetCoreGeneratedDocument;
-using CatalogoDeFilmes.Application.Models;
+﻿using CatalogoDeFilmes.Application.Models;
 using CatalogoDeFilmes.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

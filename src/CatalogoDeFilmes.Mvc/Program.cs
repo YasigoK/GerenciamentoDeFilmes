@@ -7,9 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(); 
+
 builder.Services.AddScoped<IDiretorService, DiretorService>();
+builder.Services.AddScoped<IFilmesService, FilmesService>();
+
 builder.Services.AddScoped<IDiretoresRepository, DiretoresRepository>();
+builder.Services.AddScoped<IFilmesRepository, FilmesRepository>();
+
 builder.Services.AddDbContext<CatalogoConext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BdConnection"));
