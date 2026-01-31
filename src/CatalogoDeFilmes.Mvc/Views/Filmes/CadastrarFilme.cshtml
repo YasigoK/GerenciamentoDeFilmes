@@ -25,18 +25,12 @@
         </div>
 
 
-        <!--DIRETOR-->
+        <!--DIRETOR USANDO VIEWBAG-->
         <div class="mb-3">
-            <label for="DiretorId_Fk" class="form-label text-light">Diretor)</label>
-            @* <input type="text" class="form-control" id="Description" asp-for="Sexo" placeholder=""> *@
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="DiretorId_Fk" id="DiretorId_Fk" required>
-                <option value="@Model">Masculino</option>
-                @* Aqui provavelmente será um foreach onde exibirá a lista de todos os nome de diretores, e enviar o id desse diretor *@
-                @* @foreach(var opcao in List<>)
-                    {
-                     <option value="@opcao.DiretorId_Fk">@opcao.DiretorNome</option>   
-                    } *@
+            <label for="DiretorId_Fk" class="form-label text-light">Selecione um diretor</label>
 
+            <select asp-for="DiretorId_Fk" asp-items="@(ViewBag.ListaDiretores as SelectList)" class="form-select form-select-lg mb-3">
+                <option value="">Selecione um diretor : </option>
             </select>
             <span asp-validation-for="DiretorId_Fk" class="text-danger"></span>
         </div>
@@ -52,7 +46,7 @@
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
             <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button>
-            <a class="btn btn-primary w-50" asp-controller="Diretores" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
+            <a class="btn btn-primary w-50" asp-controller="Filmes" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
 
         </div>
 

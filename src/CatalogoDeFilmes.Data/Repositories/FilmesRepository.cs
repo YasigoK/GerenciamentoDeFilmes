@@ -2,6 +2,7 @@
 using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using CatalogoDeFilmes.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace CatalogoDeFilmes.Data.Repositories;
 
@@ -18,4 +19,5 @@ public class FilmesRepository : IFilmesRepository
     {
         return await _db.Filmes.Include(f => f.Diretor).AsNoTracking().ToListAsync();
     }
+
 }

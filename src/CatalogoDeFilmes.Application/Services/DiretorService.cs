@@ -26,6 +26,17 @@ public class DiretorService : IDiretorService
             return DiretoresModel.Map(x);
         }).ToList();
     }
+    public async Task<List<DiretoresModel>> ListarNomeId()
+    {
+        var entity = await _diretoresRepository.Listar();
+        return entity.Select(x => new DiretoresModel
+        {
+            Id = x.Id,
+            PrimeiroNome = $"{x.PrimeiroNome} {x.Sobrenome}"
+        }).ToList();
+
+
+    }
 
     public async Task<bool> CadastrarDiretor(DiretoresModel diretor)
     {
@@ -55,5 +66,5 @@ public class DiretorService : IDiretorService
         }
         return false;
     }
-    
+
 }
