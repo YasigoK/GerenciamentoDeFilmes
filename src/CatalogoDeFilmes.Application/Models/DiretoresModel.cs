@@ -31,6 +31,8 @@ public class DiretoresModel : EntityBase
     [Required(ErrorMessage = "Campo obigatórios, digite o sexo")]
     public char Sexo { get;  set; }
 
+    public List<FilmesModel> Filmes { get; set; } = new List <FilmesModel>();
+
     public static DiretoresModel Map(DiretoresEntity entity)
     {
         if (entity == null)
@@ -44,7 +46,8 @@ public class DiretoresModel : EntityBase
             Sobrenome = entity.Sobrenome,
             DataDeNascimento = entity.DataDeNascimento,
             Nacionalidade = entity.Nacionalidade,
-            Sexo = entity.Sexo
+            Sexo = entity.Sexo,
+            Filmes = entity.Filmes?.Select(f => FilmesModel.Map(f)).ToList() ?? new List<FilmesModel>()
         };
     }
 }

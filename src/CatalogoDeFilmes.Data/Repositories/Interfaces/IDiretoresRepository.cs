@@ -7,5 +7,5 @@ public interface IDiretoresRepository
     Task Adicionar(DiretoresEntity diretores);
     Task Salvar();
     Task<DiretoresEntity> GetId(int id);
-    
+    void Delete(DiretoresEntity entity);
 }

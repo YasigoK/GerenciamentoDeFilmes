@@ -17,33 +17,36 @@
     @foreach (var filmes in Model)
     {
         <div class="mb-4">
-            <div class="card text-white bg-dark mb-3 shadow-lg rounded h-100" style="display: flex; flex-direction: row;  width: 100%;  border: 1px solid; border-radius: 12px !important; overflow: hidden;flex-wrap: wrap;">
-                <img src="~/imgs/cartazes/@filmes.Imagem" class="card-img-top" alt="imagem" style="width: 30%;   object-fit: cover;  max-width: 100%;   margin: 0 auto;   min-width: 226px " />
-                <div class="card-body  bg-dark " style="display: flex;  flex-direction: column; min-width: 306px;">
-                    <h4 class="card-title">@filmes.NomeFilme</h4>
-                    <h6 class="card-subtitle "><strong>DIRETOR : </strong>@filmes.DiretorNome</h6>
-                    <br />
+            <div class="card text-white bg-dark mb-3 shadow-lg rounded h-100" style="display: flex; flex-direction: row; width: 100%; border: 1px solid; border-radius: 12px !important; overflow: hidden; flex-wrap: wrap;">
+                
+                <img src="~/imgs/cartazes/@filmes.Imagem" class="card-img-top" alt="imagem" style="width: 30%; object-fit: cover; max-width: 100%; margin: 0 auto; min-width: 226px " />
+                
+                <div class="card-body bg-dark" style="display: flex; flex-direction: column; min-width: 306px;">
+                    <div class="border-start border-warning border-4 ps-3 mb-3">
+                        <h3 class="card-title fw-bold text-uppercase m-0" style="letter-spacing: 1px; color: #f8f9fa; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                            @filmes.NomeFilme
+                        </h3>
+                        <h6 class="card-subtitle "><strong>DIRETOR : </strong>@filmes.DiretorNome </h6>
+                    </div>
+
+                    <div class="mt-2 mb-3">
+                        <span class="badge bg-warning text-dark p-2" style="font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class='bi bi-star-fill'></i> <strong>NOTA: @filmes.Nota</strong>
+                        </span>
+                    </div>
+
                     <h6 class="card-subtitle "><strong>GÊNERO : </strong>@filmes.Genero</h6>
                     <br />
-                    <p class="card-text"><strong>DATA DE LANÇAMENTO :</strong> @filmes.DataLancamento.ToString("dd/MM/yyyy")</p>
-                    <p class="card-text"><strong>DURAÇÃO : </strong>@(filmes.Duracao/60) Hora e @((filmes.Duracao%60) ) minutos</p>
-                    <p class="card-text"><strong>NOTA :</strong> @filmes.Nota <br /></p>
+                    <p class="card-text mb-1"><strong>DATA DE LANÇAMENTO :</strong> @filmes.DataLancamento.ToString("dd/MM/yyyy")</p>
+                    <p class="card-text mb-1"><strong>DURAÇÃO : </strong>@(filmes.Duracao/60) Hora e @(filmes.Duracao%60) minutos</p>
+                    
 
-                    <p class="card-text text-warning">
-                        @Html.Raw(string.Join(" ", Enumerable.Repeat("<i class='bi bi-star-fill'></i>", (int)filmes.Nota)))
-                    </p>
-
-                    <div class="row mt-auto d-flex  gy-3 list-group">
-
+                    <div class="row mt-auto d-flex gy-3 list-group">
                         <a class="btn btn-warning" asp-controller="Filmes" asp-action="EditarFilme" asp-route-id="@filmes.Id"><i class="bi bi-pen"></i></a>
                         <a class="btn btn-danger" asp-controller="Filmes" asp-action="DeletarFilme" asp-route-id="@filmes.Id"><i class="bi bi-trash2"></i></a>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
     }
-
 </div>

@@ -8,4 +8,5 @@ public interface IDiretorService
     Task<bool> CadastrarDiretor(DiretoresModel diretor);
     Task<DiretoresModel> GetById(int id);
     Task<bool> EditarDiretor(DiretoresModel diretor);
+    Task<bool> DeletarDiretor(DiretoresModel diretor);
 }

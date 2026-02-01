@@ -2,16 +2,19 @@
 using CatalogoDeFilmes.Application.Services.Interfaces;
 using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using CatalogoDeFilmes.Domain.Entities;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CatalogoDeFilmes.Application.Services;
 
 public class DiretorService : IDiretorService
 {
     private readonly IDiretoresRepository _diretoresRepository;
+    private readonly IFilmesService _filmesService;
 
-    public DiretorService(IDiretoresRepository diretorrepository)
+    public DiretorService(IDiretoresRepository diretorrepository, IFilmesService filmesService)
     {
         _diretoresRepository = diretorrepository;
+        _filmesService = filmesService;
     }
 
 
@@ -67,4 +70,30 @@ public class DiretorService : IDiretorService
         return false;
     }
 
+    public async Task<bool> DeletarDiretor(DiretoresModel diretor)
+    {
+        var entity = await _diretoresRepository.GetId(diretor.Id);
+        if (entity == null)
+        {
+            return false;
+        }
+
+        // se houver algum filme e for diferente de nulo, significa que tem alguma tabela filho
+        if (entity.Filmes.Any() && entity.Filmes != null)
+        {
+
+            //essa variável serve para criar uma cópia de memoria, pq se eu usar o entity.Filmes no lugar do foreach, assim que ele deletar, não tem mais parametro pro for, e quebra
+            //ele até deleta o filho, mas não o pai
+            var listaCount = entity.Filmes.ToList();
+            foreach (var filme in listaCount)
+            {
+                var modelParaEntity = FilmesModel.Map(filme);
+                await _filmesService.DeletarFilme(modelParaEntity);
+            }
+        }
+
+        _diretoresRepository.Delete(entity);
+        await _diretoresRepository.Salvar();
+        return true;
+    }
 }

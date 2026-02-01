@@ -9,7 +9,7 @@
 <div class="page-content page-container" id="page-content">
     <div class="padding">
         <div class="row container d-flex justify-content-center">
-            <div class="col-xl-6 col-md-12">
+            <div class="col-xl-12 col-md-12">
                 <div class="card user-card-full">
                     <div class="row m-l-0 m-r-0">
 
@@ -51,9 +51,34 @@
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Filmografia</h6>
                                 <div class="row">
-                                    <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Recent</p>
-                                        <h6 class="text-muted f-w-400">Sam Disuja</h6>
+                                    <div class="col-sm-12">
+                                        @if (Model.Filmes.Any())
+                                        {
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Poster</th>
+                                                        <th>Nome</th>
+                                                        <th>Genero</th>
+                                                        <th>Lançamento</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach(var filme in Model.Filmes)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <img src="/imgs/cartazes/@filme.Imagem" width="50" class="rounded"/>
+                                                            </td>
+
+                                                            <td>@filme.NomeFilme</td>
+                                                            <td>@filme.Genero</td>
+                                                            <td>@filme.DataLancamento.ToString("dd/MM/yyyy")</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>   
+                                            </table>
+                                        }
                                     </div>
 
                                 </div>
@@ -69,7 +94,7 @@
                         </div>
                         <a class="btn btn-primary  " asp-controller="Diretores" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
                         <a class="btn btn-warning" type="submit" asp-controller="Diretores" asp-action="EditarDiretor" asp-route-id="@Model.Id"><i class="bi bi-pen"></i>Editar</i> </a>
-                        <a class="btn btn-danger" type="submit" asp-controller="Diretores" asp-action="DeletarDiretor" asp-route-id="@Model.Id"><i class="bi bi-trash2"></i>Excluir</i> </a>
+                        <a class="btn btn-danger" type="submit" asp-controller="Diretores" asp-action="ExcluirDiretor" asp-route-id="@Model.Id"><i class="bi bi-trash2"></i>Excluir</i> </a>
 
                     </div>
 

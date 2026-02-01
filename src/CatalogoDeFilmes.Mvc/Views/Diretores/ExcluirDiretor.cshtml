@@ -1,0 +1,86 @@
+﻿@using CatalogoDeFilmes.Application.Models
+@model DiretoresModel;
+
+@{
+    ViewData["Title"] = "Excluir Diretor";
+}
+
+<div class="container bg-dark p-5 rounded-5">
+
+    <div class="mb-5 text-center ">
+
+        <h1 class="text-light">Excluir Diretor</h1>
+
+    </div>
+
+    <form method="post" asp-controller="Diretores" asp-action="ExcluirDiretor">
+        <input type="hidden" asp-for="Id" />
+        <!--ALERTA-->
+        @if(Model.Filmes.Any())
+        {
+            <div class="alert alert-danger">
+                <h1>ATENÇÃO</h1>
+                <p>Este diretor possui @Model.Filmes.Count() cadastrados no banco, ao deleta-lo todos seus filhos serão deletados automaticamente</p>
+                <p>Lista de filmes: </p>
+                    @foreach(var filme in Model.Filmes)
+                    {
+                        <p>@filme.NomeFilme</p>
+                    }
+            </div>
+            }
+            else
+            {
+                <div class="alert alert-info">Este diretor não possui filmes vinculados e pode ser removido com segurança.</div>
+            }
+
+
+        <!--NOME-->
+        <div class="mb-3">
+            <label for="PrimeiroNome" class="form-label text-light">Nome:</label>
+            <input disabled type="text" class="form-control" id="PrimeiroNome" asp-for="PrimeiroNome" placeholder="Nome do(a) diretor(a) :">
+            <span asp-validation-for="PrimeiroNome" class="text-danger"></span>
+        </div>
+
+        <!--SOBRENOME-->
+        <div class="mb-3">
+            <label for="Sobrenome" class="form-label text-light">Sobrenome do(a) diretor(a) </label>
+            <input disabled type="text" class="form-control" id="Sobrenome" asp-for="Sobrenome">
+            <span asp-validation-for="Sobrenome" class="text-danger"></span>
+        </div>
+
+        <!--DATANASCIMENTO-->
+        <div class="mb-3">
+            <label for="DataDeNascimento" class="form-label text-light">Data de nascimento </label>
+            <input disabled type="date" class="form-control" id="DataDeNascimento" asp-for="DataDeNascimento">
+            <span asp-validation-for="DataDeNascimento" class="text-danger"></span>
+        </div>
+
+        <!--NASCIONALIDADE-->
+        <div class="mb-3">
+            <label for="Nacionalidade" class="form-label text-light">País de origem do(a) diretor(a)</label>
+            <input Disabled type="text" class="form-control" id="Description" asp-for="Nacionalidade" placeholder="País de origem :">
+            <span asp-validation-for="Nacionalidade" class="text-danger"></span>
+        </div>
+
+        <!--SEXO DROP-->
+        <div class="mb-3">
+            <label for="Sexo" class="form-label text-light">Sexo do(a) diretor(a)</label>
+            @* <input type="text" class="form-control" id="Description" asp-for="Sexo" placeholder=""> *@
+            <select Disabled class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="Sexo" id="Sexo" required>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+                <option value="O">Outro</option>
+            </select>
+            <span asp-validation-for="Sexo" class="text-danger"></span>
+        </div>
+
+        <!--BOTÃO-->
+        <div class="d-flex gap-5 mt-5">
+            <button type="submit" class="btn btn-success w-50">Excluir <i class="bi bi-trash2 mx-2"></i> </button>
+            <a class="btn btn-primary w-50" asp-controller="Diretores" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
+
+        </div>
+
+
+    </form>
+</div>

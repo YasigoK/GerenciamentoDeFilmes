@@ -29,7 +29,6 @@ public class FilmesModel : EntityBase
     public int Duracao { get;  set; }
 
     [DisplayName("Selecione a imagem")]
-    [Required(ErrorMessage = "Campo obrigatório, escolha a capa do filme")]
     public string Imagem { get;  set; }
 
     [DisplayName("Digite o nome")]
@@ -56,7 +55,7 @@ public class FilmesModel : EntityBase
             Duracao = filme.Duracao,
             Imagem = filme.Imagem,
             Nota = filme.Nota,
-            DiretorNome = filme.Diretor?.PrimeiroNome ?? "Não informado" //caso seja passada uma entidade que não tenha um nome de diretor atrelada, evitar o erro Diretor == null 
+            DiretorNome = filme.Diretor?.PrimeiroNome + " " + filme.Diretor?.Sobrenome ?? "Não informado" //caso seja passada uma entidade que não tenha um nome de diretor atrelada, evitar o erro Diretor == null 
        };
     }
 

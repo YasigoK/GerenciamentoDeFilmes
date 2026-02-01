@@ -29,6 +29,11 @@ public class DiretoresRepository : IDiretoresRepository
     }
     public async Task<DiretoresEntity> GetId(int id)
     {
-        return await _db.Diretores.FirstOrDefaultAsync(x => x.Id == id);
+        return await _db.Diretores.Include(d=>d.Filmes).FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public void Delete(DiretoresEntity filme)
+    {
+        _db.Diretores.Remove(filme);
     }
 }

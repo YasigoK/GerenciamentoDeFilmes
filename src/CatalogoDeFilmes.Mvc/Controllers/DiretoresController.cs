@@ -58,4 +58,26 @@ public class DiretoresController : Controller
 
         return RedirectToAction("Index");
     }
+
+
+
+
+    [HttpGet]
+    public async Task<IActionResult> ExcluirDiretor(int id)
+    {
+        var diretor = await _dirService.GetById(id); 
+        return View(diretor);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ExcluirDiretor(DiretoresModel diretor)
+    {
+        var sucesso = await _dirService.DeletarDiretor(diretor);
+
+        if(sucesso != null)
+        {
+            return RedirectToAction("Index");   
+        }
+            return View(diretor);
+    }
 }
