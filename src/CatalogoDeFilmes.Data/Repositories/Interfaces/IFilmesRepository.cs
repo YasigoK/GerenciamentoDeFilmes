@@ -7,5 +7,6 @@ public interface IFilmesRepository
     Task<List<FilmesEntity>> Listar();
     Task CadastrarFilme(FilmesEntity filmes);
     Task Salvar();
+    Task<FilmesEntity> GetId(int id);
 
 }

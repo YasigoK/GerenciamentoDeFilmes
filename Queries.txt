@@ -1,3 +1,12 @@
+--======================CRIANDO BANCO========================================
+
+
+CREATE DATABASE CatalogoDb;
+GO
+
+USE CatalogoDb;
+GO
+
 --======================CRIANDO TABELA PAI===================================
 create table Diretores(
 --Id uniqueidentifier primary key  default newid() not null,
@@ -33,7 +42,7 @@ create table Filmes(
 
 --======================INSERINDO DADOS PAI ===================================
 
-insert into teste (PrimeiroNome,Sobrenome, DataDeNascimento,Nacionalidade,Sexo)
+insert into Diretores (PrimeiroNome,Sobrenome, DataDeNascimento,Nacionalidade,Sexo)
 values
 ('nome1','sobre1','1983-12-23','Brasil','F'),
 ('nome2','sobre2','1973-11-13','USA','M'),

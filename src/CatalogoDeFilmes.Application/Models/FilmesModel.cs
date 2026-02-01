@@ -47,18 +47,18 @@ public class FilmesModel : EntityBase
         if (filme == null)
             return null;
 
-        return new FilmesModel
+       return new FilmesModel
         {
             Id = filme.Id,
             NomeFilme = filme.NomeFilme,
             Genero = filme.Genero,
-            DiretorId_Fk = filme.Diretor.Id,
+            DiretorId_Fk = filme.DiretorId_Fk,
             DataLancamento = filme.DataLancamento,
             Duracao = filme.Duracao,
             Imagem = filme.Imagem,
             Nota = filme.Nota,
-            DiretorNome = filme.Diretor.PrimeiroNome
-        };
+            DiretorNome = filme.Diretor?.PrimeiroNome ?? "Não informado" //caso seja passada uma entidade que não tenha um nome de diretor atrelada, evitar o erro Diretor == null 
+       };
     }
 
 

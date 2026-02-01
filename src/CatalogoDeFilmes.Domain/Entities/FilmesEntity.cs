@@ -24,7 +24,7 @@ public class FilmesEntity : EntityBase
         Imagem = imagem;
         Nota = nota;
     }
-    public void AtulizarFilme( string nomeFilme, string genero, int diretor, DateTime datal, int dur,string imagem, decimal nota)
+    public void AtualizarFilme( string nomeFilme, string genero, int diretor, DateTime datal, int dur,string imagem, decimal nota)
     {
         NomeFilme = nomeFilme;
         Genero = genero;

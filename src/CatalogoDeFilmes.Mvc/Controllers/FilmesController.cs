@@ -27,6 +27,8 @@ public class FilmesController : Controller
         return View(listagem);
     }
 
+
+
     [HttpGet]
     public async Task<IActionResult> CadastrarFilme()
 
@@ -41,6 +43,25 @@ public class FilmesController : Controller
     {
         var result = await _filmesService.CadastrarFilme(filmes,foto);
 
+        return RedirectToAction("index");
+    }
+
+
+
+    [HttpGet]
+    public async Task<IActionResult> EditarFilme(int id)
+    {
+        var entity = await _filmesService.GetById(id);
+        var listagem = await _diretorService.ListarNomeId();
+
+        ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
+        return View(entity);
+    }
+
+    [HttpPost]
+    public async Task <IActionResult> EditarFilme(FilmesModel filme, IFormFile foto)
+    {
+        await _filmesService.EditarFilme(filme,foto);
         return RedirectToAction("index");
     }
 }

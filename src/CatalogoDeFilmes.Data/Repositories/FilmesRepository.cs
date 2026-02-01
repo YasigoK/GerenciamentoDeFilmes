@@ -29,4 +29,9 @@ public class FilmesRepository : IFilmesRepository
     {
         await _db.SaveChangesAsync();
     }
+
+    public async Task<FilmesEntity> GetId(int id)
+    {
+        return await _db.Filmes.Include(d=>d.Diretor).FirstOrDefaultAsync(i  => i.Id == id);
+    }
 }
