@@ -72,9 +72,27 @@ public class FilmesService :IFilmesService
 
     public async Task<bool> EditarFilme(FilmesModel filme, IFormFile foto)
     {
+        var modelo = await _filmesRepository.GetId(filme.Id);
+        if(modelo == null)
+        {
+            filme.OperacaoValida = false;
+            filme.errorMsg = "Formulario invalido";
+            return false;
+        }
 
         if (foto != null)
         {
+
+            if (!string.IsNullOrEmpty(modelo.Imagem))
+            {
+                string caminhoAntigo = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", modelo.Imagem);
+                if (System.IO.File.Exists(caminhoAntigo))
+                {
+                    System.IO.File.Delete(caminhoAntigo);
+                }
+            }
+
+
             string nomeFinalImagem = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(foto.FileName);
             filme.Imagem = nomeFinalImagem;
             string caminho = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", nomeFinalImagem);
@@ -84,25 +102,44 @@ public class FilmesService :IFilmesService
                 await foto.CopyToAsync(stream);
             }
         }
-        var modelo = await _filmesRepository.GetId(filme.Id);
 
-        if(modelo != null)
-        {
-            modelo.AtualizarFilme
-                (
-                        filme.NomeFilme, 
-                        filme.Genero,
-                        filme.DiretorId_Fk,
-                        filme.DataLancamento,
-                        filme.Duracao,
-                        filme.Imagem,
-                        filme.Nota
+
+        modelo.AtualizarFilme
+            (
+                    filme.NomeFilme, 
+                    filme.Genero,
+                    filme.DiretorId_Fk,
+                    filme.DataLancamento,
+                    filme.Duracao,
+                    filme.Imagem,
+                    filme.Nota
                 
-                );
-            await _filmesRepository.Salvar();
-            return true;
+            );
+        await _filmesRepository.Salvar();
+        return true;
+
+    }
+
+    public async Task<bool> DeletarFilme(FilmesModel filme)
+    {
+        var entity = await _filmesRepository.GetId(filme.Id);
+
+        if (entity == null)
+        {
+            filme.OperacaoValida = false;
+            filme.errorMsg = "Formulario invalido";
+            return false;
         }
 
-        return false;
+        string caminho = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", filme.Imagem);
+
+        if(System.IO.File.Exists(caminho))  // se o arquivo existir
+            System.IO.File.Delete(caminho);
+        
+
+        _filmesRepository.Delete(entity);
+        await _filmesRepository.Salvar();
+
+        return true;
     }
 }

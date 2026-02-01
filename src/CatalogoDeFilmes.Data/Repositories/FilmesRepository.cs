@@ -34,4 +34,9 @@ public class FilmesRepository : IFilmesRepository
     {
         return await _db.Filmes.Include(d=>d.Diretor).FirstOrDefaultAsync(i  => i.Id == id);
     }
+
+    public void Delete(FilmesEntity filme)
+    {
+        _db.Filmes.Remove(filme);
+    }
 }

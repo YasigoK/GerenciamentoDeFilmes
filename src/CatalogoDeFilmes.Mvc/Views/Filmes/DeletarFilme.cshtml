@@ -5,22 +5,25 @@
 
     <div class="mb-5 text-center ">
 
-        <h1 class="text-light">Cadastro de Filme</h1>
+        <h1 class="text-light">Remover Filme</h1>
 
     </div>
 
-    <form method="post" asp-controller="Filmes" asp-action="CadastrarFilme" enctype="multipart/form-data">
+    <form method="post" asp-controller="Filmes" asp-action="DeletarFilme">
+        <input type="hidden" asp-for="Id" />
+
+        <h2 class="text-light">Confirmação dos dados a serem deletados</h2>
         <!--NOME-->
         <div class="mb-3">
             <label for="NomeFilme" class="form-label text-light">Nome:</label>
-            <input type="text" class="form-control" id="NomeFilme" asp-for="NomeFilme" placeholder="Nome do filme :">
+            <input type="text" class="form-control" id="NomeFilme" asp-for="NomeFilme" placeholder="Nome do filme :" disabled>
             <span asp-validation-for="NomeFilme" class="text-danger"></span>
         </div>
 
         <!--GENERO-->
         <div class="mb-3">
             <label for="Genero" class="form-label text-light">Genero do(a) diretor(a) </label>
-            <input type="text" class="form-control" id="Genero" asp-for="Genero" placeholder="Gênero">
+            <input type="text" class="form-control" id="Genero" asp-for="Genero" placeholder="Gênero" disabled>
             <span asp-validation-for="Genero" class="text-danger"></span>
         </div>
 
@@ -29,8 +32,7 @@
         <div class="mb-3">
             <label for="DiretorId_Fk" class="form-label text-light">Selecione um diretor</label>
 
-            <select asp-for="DiretorId_Fk" asp-items="@(ViewBag.ListaDiretores as SelectList)" class="form-select form-select-lg mb-3">
-                <option value="">Selecione um diretor : </option>
+            <select asp-for="DiretorId_Fk" asp-items="@(ViewBag.ListaDiretores as SelectList)" class="form-select form-select-lg mb-3" disabled>
             </select>
             <span asp-validation-for="DiretorId_Fk" class="text-danger"></span>
         </div>
@@ -38,33 +40,42 @@
         <!--DATA DE LANÇAMENTO-->
         <div class="mb-3">
             <label for="DataLancamento" class="form-label text-light">Data de lançamento </label>
-            <input type="date" class="form-control" id="DataDeNascimento" asp-for="DataLancamento" placeholder="Data de Lançamento">
+            <input type="date" class="form-control" id="DataDeNascimento" asp-for="DataLancamento" placeholder="Data de Lançamento" disabled>
             <span asp-validation-for="DataLancamento" class="text-danger"></span>
         </div>
 
         <!--DURAÇÃO DO FILME-->
         <div class="mb-3">
             <label for="GeneDuracaoro" class="form-label text-light">Duração em minutos </label>
-            <input type="number" class="form-control" id="Duracao" asp-for="Duracao" placeholder="Duracao">
+            <input type="number" class="form-control" id="Duracao" asp-for="Duracao" placeholder="Duracao" disabled>
             <span asp-validation-for="Duracao" class="text-danger"></span>
         </div>
 
         <!--UPLOAD DE IMAGEM-->
-        <div class="mb-3">
-            <label class="form-label text-light">Imagem do Filme</label>
-            <input type="file" name="foto" class="form-control" />
+        <input type="hidden" asp-for="Imagem" />
+        <div class="row mb-3 align-items-center">
+
+            <div class="col-sm-2 text-center">
+                <img src="/imgs/cartazes/@Model.Imagem" width="150" class="img-thumbnail">
+            </div>
+
+            <div class="col-sm-10">
+                <label for="Imagem" class="form-label text-light">Imagem do Filme</label>
+                <input type="file" asp-for="Imagem" name="foto" class="form-control" disabled />
+            </div>
+
         </div>
 
         <!--NOTA DO FILME-->
         <div class="mb-3">
             <label for="Nota" class="form-label text-light">Nota do filme 1-10 </label>
-            <input type="number" class="form-control" id="Nota" asp-for="Nota" placeholder="Nota">
+            <input type="number" class="form-control" id="Nota" asp-for="Nota" placeholder="Nota" disabled>
             <span asp-validation-for="Nota" class="text-danger"></span>
         </div>
 
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
-            <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button>
+            <button type="submit" class="btn btn-success w-50">Remover <i class="bi bi-trash2"> </button>
             <a class="btn btn-primary w-50" asp-controller="Filmes" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
 
         </div>

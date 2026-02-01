@@ -8,5 +8,6 @@ public interface IFilmesRepository
     Task CadastrarFilme(FilmesEntity filmes);
     Task Salvar();
     Task<FilmesEntity> GetId(int id);
+    void Delete(FilmesEntity filme);
 
 }
