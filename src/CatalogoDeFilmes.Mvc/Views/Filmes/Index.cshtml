@@ -26,7 +26,7 @@
                     <h6 class="card-subtitle "><strong>GÊNERO : </strong>@filmes.Genero</h6>
                     <br />
                     <p class="card-text"><strong>DATA DE LANÇAMENTO :</strong> @filmes.DataLancamento.ToString("dd/MM/yyyy")</p>
-                    <p class="card-text"><strong>DURAÇÃO : </strong>@filmes.Duracao minutos</p>
+                    <p class="card-text"><strong>DURAÇÃO : </strong>@(filmes.Duracao/60) Hora e @((filmes.Duracao%60) ) minutos</p>
                     <p class="card-text"><strong>NOTA :</strong> @filmes.Nota <br /></p>
 
                     <p class="card-text text-warning">

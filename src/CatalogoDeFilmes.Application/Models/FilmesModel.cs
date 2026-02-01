@@ -27,6 +27,10 @@ public class FilmesModel : EntityBase
     [Required(ErrorMessage = "Campo obrigatório, digite a quantidade de minutos do filme")]
     [DataType(DataType.Currency)]
     public int Duracao { get;  set; }
+
+    [DisplayName("Selecione a imagem")]
+    [Required(ErrorMessage = "Campo obrigatório, escolha a capa do filme")]
+    //[DataType(DataType.ImageUrl)]
     public string Imagem { get;  set; }
 
     [DisplayName("Digite o nome")]

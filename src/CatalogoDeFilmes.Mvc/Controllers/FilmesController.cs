@@ -1,4 +1,5 @@
-﻿using CatalogoDeFilmes.Application.Services.Interfaces;
+﻿using CatalogoDeFilmes.Application.Models;
+using CatalogoDeFilmes.Application.Services.Interfaces;
 using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,7 +20,7 @@ public class FilmesController : Controller
 
 
 
-    //[HttpGet]
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var listagem = await _filmesService.ListarTodos();
@@ -33,5 +34,13 @@ public class FilmesController : Controller
         var listagem = await _diretorService.ListarNomeId();
         ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CadastrarFilme(FilmesModel filmes, IFormFile foto)
+    {
+        var result = await _filmesService.CadastrarFilme(filmes,foto);
+
+        return RedirectToAction("index");
     }
 }

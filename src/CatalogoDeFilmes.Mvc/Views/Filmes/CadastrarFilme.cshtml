@@ -9,7 +9,7 @@
 
     </div>
 
-    <form method="post" asp-controller="Filmes" asp-action="CadastrarFilme">
+    <form method="post" asp-controller="Filmes" asp-action="CadastrarFilme" enctype="multipart/form-data">
         <!--NOME-->
         <div class="mb-3">
             <label for="NomeFilme" class="form-label text-light">Nome:</label>
@@ -17,7 +17,7 @@
             <span asp-validation-for="NomeFilme" class="text-danger"></span>
         </div>
 
-        <!--SOBRENOME-->
+        <!--GENERO-->
         <div class="mb-3">
             <label for="Genero" class="form-label text-light">Genero do(a) diretor(a) </label>
             <input type="text" class="form-control" id="Genero" asp-for="Genero" placeholder="Gênero">
@@ -35,13 +35,32 @@
             <span asp-validation-for="DiretorId_Fk" class="text-danger"></span>
         </div>
 
-        <!--DATADELANÇAMENTO-->
+        <!--DATA DE LANÇAMENTO-->
         <div class="mb-3">
             <label for="DataLancamento" class="form-label text-light">Data de lançamento </label>
             <input type="date" class="form-control" id="DataDeNascimento" asp-for="DataLancamento" placeholder="Data de Lançamento">
             <span asp-validation-for="DataLancamento" class="text-danger"></span>
         </div>
 
+        <!--DURAÇÃO DO FILME-->
+        <div class="mb-3">
+            <label for="GeneDuracaoro" class="form-label text-light">Duração em minutos </label>
+            <input type="number" class="form-control" id="Duracao" asp-for="Duracao" placeholder="Duracao">
+            <span asp-validation-for="Duracao" class="text-danger"></span>
+        </div>
+
+        <!--UPLOAD DE IMAGEM-->
+        <div class="mb-3">
+            <label class="form-label text-light">Imagem do Filme</label>
+            <input type="file" name="foto" class="form-control" />
+        </div>
+
+        <!--NOTA DO FILME-->
+        <div class="mb-3">
+            <label for="Nota" class="form-label text-light">Nota do filme 1-10 </label>
+            <input type="number" class="form-control" id="Nota" asp-for="Nota" placeholder="Nota">
+            <span asp-validation-for="Nota" class="text-danger"></span>
+        </div>
 
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">

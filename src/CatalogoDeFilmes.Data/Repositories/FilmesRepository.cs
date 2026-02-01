@@ -14,10 +14,19 @@ public class FilmesRepository : IFilmesRepository
     {
         _db = db;
     }
-
     public async Task<List<FilmesEntity>> Listar()
     {
         return await _db.Filmes.Include(f => f.Diretor).AsNoTracking().ToListAsync();
     }
 
+    public async Task CadastrarFilme(FilmesEntity filmes)
+    {
+        await _db.Filmes.AddAsync(filmes);
+    }
+
+
+    public async Task Salvar()
+    {
+        await _db.SaveChangesAsync();
+    }
 }
