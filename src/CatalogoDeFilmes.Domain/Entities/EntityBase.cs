@@ -13,8 +13,8 @@ public abstract class EntityBase
     }
 
     [NotMapped]
-    public string errorMsg { get; set; }
+    public List<string> errorMsg { get; set; } = new List<string>();
 
     [NotMapped]
-    public bool OperacaoValida { get; set; }
+    public bool OperacaoValida { get; set; } = true;
 }

@@ -35,7 +35,8 @@ public class DiretorService : IDiretorService
         return entity.Select(x => new DiretoresModel
         {
             Id = x.Id,
-            PrimeiroNome = $"{x.PrimeiroNome} {x.Sobrenome}"
+            PrimeiroNome = $"{x.PrimeiroNome} {x.Sobrenome}",
+            DataDeNascimento = x.DataDeNascimento
         }).ToList();
 
 

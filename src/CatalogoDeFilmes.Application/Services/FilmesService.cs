@@ -4,10 +4,7 @@ using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using CatalogoDeFilmes.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using System.IO;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace CatalogoDeFilmes.Application.Services;
@@ -76,7 +73,7 @@ public class FilmesService :IFilmesService
         if(modelo == null)
         {
             filme.OperacaoValida = false;
-            filme.errorMsg = "Formulario invalido";
+            filme.errorMsg.Add("Formulario invalido");
             return false;
         }
 
@@ -127,7 +124,7 @@ public class FilmesService :IFilmesService
         if (entity == null)
         {
             filme.OperacaoValida = false;
-            filme.errorMsg = "Formulario invalido";
+            filme.errorMsg.Add("Formulario invalido");
             return false;
         }
 
@@ -140,6 +137,71 @@ public class FilmesService :IFilmesService
         _filmesRepository.Delete(entity);
         await _filmesRepository.Salvar();
 
+        return true;
+    }
+
+
+
+    public async Task<bool> ValidarFomulario(FilmesModel filme, IFormFile foto)
+    {
+        //Nome
+        if (filme.NomeFilme.IsNullOrEmpty())
+        {
+            filme.errorMsg.Add("Nome vazio");
+            filme.OperacaoValida = false;
+        }
+
+        //Genero
+        if (filme.Genero.IsNullOrEmpty())
+        {
+            filme.errorMsg.Add("Genero vazio");
+            filme.OperacaoValida = false;
+        }
+
+        //Data
+        if(filme.DataLancamento > DateTime.Today ||filme.DataLancamento == DateTime.MinValue)
+        {
+            filme.errorMsg.Add("Data invalida, data no futuro");
+            filme.OperacaoValida = false;
+        }
+        //Data antes do diretor
+        //if(filme.DataLancamento<filme.)
+
+
+        //Imagem
+        if ( foto == null)
+        {
+            filme.errorMsg.Add("Nenhum arquivo foi enviado");
+            filme.OperacaoValida = false;
+        }
+
+        //Diretor
+        if (filme.DiretorId_Fk == 0 )
+        {
+            filme.errorMsg.Add("É necessário a seleção e um diretor para o filme");
+            filme.OperacaoValida = false;
+        }
+
+        //Duração
+        if(filme.Duracao < 1)
+        {
+            filme.errorMsg.Add("Nota invalida, valor entre 1 e 10");
+            filme.OperacaoValida = false;
+        }
+
+        //Nota
+        if(filme.Nota>10|| filme.Nota < 1)
+        {
+            filme.errorMsg.Add("Nota invalida, valor entre 1 e 10");
+            filme.OperacaoValida = false;
+        }
+
+
+
+        if (filme.OperacaoValida == false)
+        {
+            return false;
+        }
         return true;
     }
 }

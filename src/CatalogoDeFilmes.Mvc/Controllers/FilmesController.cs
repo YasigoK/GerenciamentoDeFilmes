@@ -21,7 +21,6 @@ public class FilmesController : Controller
     }
 
 
-
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -36,14 +35,15 @@ public class FilmesController : Controller
 
     {
         var listagem = await _diretorService.ListarNomeId();
-        ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
+        ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome", "DataDeNascimento");
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> CadastrarFilme(FilmesModel filmes, IFormFile foto)
     {
-        if (!ModelState.IsValid==false)
+        var validar = await _filmesService.ValidarFomulario(filmes,foto);
+        if (validar==false)
         {
             var listagem = await _diretorService.ListarNomeId();
             ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
@@ -70,7 +70,7 @@ public class FilmesController : Controller
     [HttpPost]
     public async Task <IActionResult> EditarFilme(FilmesModel filme, IFormFile foto)
     {
-        if (!ModelState.IsValid ==false)
+        if (ModelState.IsValid ==false)
         {
             var listagem = await _diretorService.ListarNomeId();
             ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");

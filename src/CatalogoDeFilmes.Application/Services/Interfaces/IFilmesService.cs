@@ -10,4 +10,5 @@ public interface IFilmesService
     Task<FilmesModel> GetById(int id);
     Task<bool> EditarFilme(FilmesModel filme, IFormFile foto);
     Task<bool> DeletarFilme(FilmesModel filme);
+    Task<bool> ValidarFomulario(FilmesModel filme, IFormFile foto);
 }

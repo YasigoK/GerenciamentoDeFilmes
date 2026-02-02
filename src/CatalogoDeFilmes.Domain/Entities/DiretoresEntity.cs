@@ -8,6 +8,8 @@ public class DiretoresEntity:EntityBase
     public string Nacionalidade { get; protected set; }
     public char Sexo { get; protected set; }
 
+    //virtual = lazy loading, vai pesquisar no banco no momento que for acessado. 
+    //Icollection sendo uma interface genérica com funções básicas 
     public virtual ICollection<FilmesEntity> Filmes { get; protected set; } = new List<FilmesEntity>(); // quando for carregar um diretor, será possivel exibir a lista de filmes relacionadas/dependentes dele
 
 
