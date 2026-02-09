@@ -31,6 +31,10 @@ public class FilmesService :IFilmesService
     }
     public async Task<bool> CadastrarFilme(FilmesModel filme, IFormFile foto)
     {
+        var validar =_ValidarFomulario(filme, foto);
+        if(validar ==false)
+            return false;
+
         if (foto != null)
         {
             string nomeFinalImagem = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(foto.FileName);
@@ -142,7 +146,7 @@ public class FilmesService :IFilmesService
 
 
 
-    public async Task<bool> ValidarFomulario(FilmesModel filme, IFormFile foto)
+   private bool _ValidarFomulario(FilmesModel filme, IFormFile foto)
     {
         //Nome
         if (filme.NomeFilme.IsNullOrEmpty())
@@ -158,14 +162,15 @@ public class FilmesService :IFilmesService
             filme.OperacaoValida = false;
         }
 
-        //Data
+        //Data no futuro ou valor minimo
         if(filme.DataLancamento > DateTime.Today ||filme.DataLancamento == DateTime.MinValue)
         {
             filme.errorMsg.Add("Data invalida, data no futuro");
             filme.OperacaoValida = false;
         }
+
         //Data antes do diretor
-        //if(filme.DataLancamento<filme.)
+        //if(filme.DataLancamento<filme)
 
 
         //Imagem
@@ -196,12 +201,11 @@ public class FilmesService :IFilmesService
             filme.OperacaoValida = false;
         }
 
-
-
         if (filme.OperacaoValida == false)
         {
             return false;
         }
         return true;
     }
+
 }

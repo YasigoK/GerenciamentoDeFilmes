@@ -31,7 +31,7 @@ public class FilmesController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> CadastrarFilme()
+    public async Task<IActionResult> CadastrarFilme(FilmesModel? filme)
 
     {
         var listagem = await _diretorService.ListarNomeId();
@@ -42,15 +42,9 @@ public class FilmesController : Controller
     [HttpPost]
     public async Task<IActionResult> CadastrarFilme(FilmesModel filmes, IFormFile foto)
     {
-        var validar = await _filmesService.ValidarFomulario(filmes,foto);
-        if (validar==false)
-        {
-            var listagem = await _diretorService.ListarNomeId();
-            ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
-
-            return View(filmes);
-        }
         var result = await _filmesService.CadastrarFilme(filmes,foto);
+        if (result==false)
+            return RedirectToAction("CadastrarFilme",filmes);
 
         return RedirectToAction("index");
     }
