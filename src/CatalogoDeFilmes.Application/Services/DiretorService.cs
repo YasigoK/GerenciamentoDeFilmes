@@ -48,7 +48,7 @@ public class DiretorService : IDiretorService
         //validação
 
         //continua
-        await _diretoresRepository.Adicionar(entity);
+        _diretoresRepository.CadastrarDiretor(entity);
         await _diretoresRepository.Salvar();
 
         return true;

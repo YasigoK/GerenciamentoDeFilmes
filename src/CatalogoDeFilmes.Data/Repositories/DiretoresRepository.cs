@@ -18,10 +18,6 @@ public class DiretoresRepository : IDiretoresRepository
     {
         return await _db.Diretores.AsNoTracking().ToListAsync();
     }
-    public async Task Adicionar(DiretoresEntity diretores)
-    {
-        await _db.Diretores.AddAsync(diretores);
-    }
     
     public async Task Salvar()
     {
@@ -30,6 +26,10 @@ public class DiretoresRepository : IDiretoresRepository
     public async Task<DiretoresEntity> GetId(int id)
     {
         return await _db.Diretores.Include(d=>d.Filmes).FirstOrDefaultAsync(x => x.Id == id);
+    }
+    public void CadastrarDiretor(DiretoresEntity diretores)
+    {
+        _db.Diretores.Add(diretores);
     }
 
     public void Delete(DiretoresEntity filme)

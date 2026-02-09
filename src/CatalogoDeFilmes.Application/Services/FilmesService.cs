@@ -55,7 +55,7 @@ public class FilmesService :IFilmesService
          );
 
 
-        await _filmesRepository.CadastrarFilme(novoFilme);
+        _filmesRepository.CadastrarFilme(novoFilme);
         await _filmesRepository.Salvar();
 
         return true;

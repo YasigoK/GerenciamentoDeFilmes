@@ -41,9 +41,6 @@ public class DiretoresController : Controller
     }
 
 
-
-
-
     [HttpGet]
     public async Task<IActionResult> EditarDiretor(int Id)
     {
@@ -58,8 +55,6 @@ public class DiretoresController : Controller
 
         return RedirectToAction("Index");
     }
-
-
 
 
     [HttpGet]

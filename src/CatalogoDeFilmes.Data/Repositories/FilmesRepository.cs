@@ -2,7 +2,6 @@
 using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using CatalogoDeFilmes.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 
 namespace CatalogoDeFilmes.Data.Repositories;
 
@@ -19,12 +18,6 @@ public class FilmesRepository : IFilmesRepository
         return await _db.Filmes.Include(f => f.Diretor).AsNoTracking().ToListAsync();
     }
 
-    public async Task CadastrarFilme(FilmesEntity filmes)
-    {
-        await _db.Filmes.AddAsync(filmes);
-    }
-
-
     public async Task Salvar()
     {
         await _db.SaveChangesAsync();
@@ -33,6 +26,10 @@ public class FilmesRepository : IFilmesRepository
     public async Task<FilmesEntity> GetId(int id)
     {
         return await _db.Filmes.Include(d=>d.Diretor).FirstOrDefaultAsync(i  => i.Id == id);
+    }
+    public void CadastrarFilme(FilmesEntity filmes)
+    {
+        _db.Filmes.Add(filmes);
     }
 
     public void Delete(FilmesEntity filme)

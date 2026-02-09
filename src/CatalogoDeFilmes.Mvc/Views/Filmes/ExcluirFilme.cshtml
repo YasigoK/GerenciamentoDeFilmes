@@ -59,10 +59,6 @@
                 <img src="/imgs/cartazes/@Model.Imagem" width="150" class="img-thumbnail">
             </div>
 
-            <div class="col-sm-10">
-                <label for="Imagem" class="form-label text-light">Imagem do Filme</label>
-                <input type="file" asp-for="Imagem" name="foto" class="form-control" disabled />
-            </div>
 
         </div>
 
@@ -75,9 +71,8 @@
 
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
-            <button type="submit" class="btn btn-success w-50">Remover <i class="bi bi-trash2"> </button>
+            <button type="submit" class="btn btn-danger w-50">Excluir <i class="bi bi-trash2"> </i></button>
             <a class="btn btn-primary w-50" asp-controller="Filmes" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
-
         </div>
 
 

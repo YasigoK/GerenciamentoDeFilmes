@@ -8,13 +8,13 @@ public class DiretoresModel : EntityBase
 {
 
     [DisplayName("Digite o nome")]
-    [MaxLength(70)]
-    [Required(ErrorMessage ="Campo obrigatório, entre com um nome de até 70 caracteres")]
+    [MaxLength(70,ErrorMessage = "Entre com um nome de até 70 caracteres")]
+    [Required(ErrorMessage = "Campo obrigatório, entre com o nome do(a) Diretor(ar)")]
     public string PrimeiroNome { get;  set; }
 
     [DisplayName("Digite o Sobrenome")]
-    [MaxLength(70)]
-    [Required(ErrorMessage = "Campo obrigatório, entre com um sobrenome de até 70 caracteres")]
+    [MaxLength(70,ErrorMessage = "Entre com um sobrenome de até 70 caracteres")]
+    [Required(ErrorMessage = "Campo obrigatório, entre com o sobre nome do(a) Diretor(ar)")]
     public string Sobrenome { get;  set; }
 
     [DisplayName("Digite a data de nascimento ")]
@@ -23,8 +23,8 @@ public class DiretoresModel : EntityBase
     public DateTime DataDeNascimento { get;  set; }
 
     [DisplayName("Digite a nacionalidade ")]
-    [MaxLength(100)]
-    [Required(ErrorMessage = "Campo obigatórios, digite o pais de origem de até 100 caractéres.")]
+    [MaxLength(100, ErrorMessage = "Entre com um sobrenome de até 100 caracteres")]
+    [Required(ErrorMessage = "Campo obigatórios, digite o pais de origem")]
     public string Nacionalidade { get;  set; }
 
     [DisplayName("Digite o sexo")]

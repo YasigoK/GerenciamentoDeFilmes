@@ -83,7 +83,7 @@ public class FilmesController : Controller
     }
 
     [HttpGet]
-    public async Task <IActionResult> DeletarFilme(int id)
+    public async Task <IActionResult> ExcluirFilme(int id)
     {
         var entity = await _filmesService.GetById(id);
         var listagem = await _diretorService.ListarNomeId();
@@ -93,7 +93,7 @@ public class FilmesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeletarFilme(FilmesModel filme)
+    public async Task<IActionResult> ExcluirFilme(FilmesModel filme)
     {
         var entity = await _filmesService.DeletarFilme(filme);
 
