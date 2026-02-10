@@ -1,11 +1,6 @@
 ﻿using CatalogoDeFilmes.Domain.Entities;
-using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.ConstrainedExecution;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CatalogoDeFilmes.Application.Models;
 

@@ -8,6 +8,19 @@
         <h1 class="text-light">Cadastro de Filme</h1>
 
     </div>
+    @if (Model?.errorMsg != null && Model.errorMsg.Any())
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach (var erro in Model.errorMsg)
+                {
+                    <li>Erro de entrada : @erro</li>
+                }
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
 
     <form method="post" asp-controller="Filmes" asp-action="CadastrarFilme" enctype="multipart/form-data">
         @* <input type="hidden" asp-for="@(ViewBag.ListaDiretores.DataDeNascimento)" /> *@

@@ -1,11 +1,7 @@
 ﻿using CatalogoDeFilmes.Application.Models;
 using CatalogoDeFilmes.Application.Services.Interfaces;
-using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.VisualBasic;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CatalogoDeFilmes.Mvc.Controllers;
 
@@ -20,7 +16,6 @@ public class FilmesController : Controller
         _diretorService = diretorService;
     }
 
-
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -28,62 +23,70 @@ public class FilmesController : Controller
         return View(listagem);
     }
 
-
-
     [HttpGet]
-    public async Task<IActionResult> CadastrarFilme(FilmesModel? filme)
+    public async Task<IActionResult> CadastrarFilme()
 
     {
         var listagem = await _diretorService.ListarNomeId();
-        ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome", "DataDeNascimento");
+        ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> CadastrarFilme(FilmesModel filmes, IFormFile foto)
+    public async Task<IActionResult> CadastrarFilme(FilmesModel filme, IFormFile foto)
     {
-        var result = await _filmesService.CadastrarFilme(filmes,foto);
-        if (result==false)
-            return RedirectToAction("CadastrarFilme",filmes);
+        await _filmesService.CadastrarFilme(filme, foto);
+        if (filme.OperacaoValida == false) { 
+
+            var listagem = await _diretorService.ListarNomeId();
+            ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
+            return View(filme);
+        }
 
         return RedirectToAction("index");
     }
 
-
-
     [HttpGet]
     public async Task<IActionResult> EditarFilme(int id)
     {
-        var entity = await _filmesService.GetById(id);
-        var listagem = await _diretorService.ListarNomeId();
+        var entity = await _filmesService.BuscarId(id);
+        if (entity != null)
+        {
+            var listagem = await _diretorService.ListarNomeId();
 
-        ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
-        return View(entity);
+            ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
+            return View(entity);
+        }
+        return NotFound();
     }
 
     [HttpPost]
     public async Task <IActionResult> EditarFilme(FilmesModel filme, IFormFile foto)
     {
-        if (ModelState.IsValid ==false)
+
+        await _filmesService.EditarFilme(filme, foto);
+        if (filme.OperacaoValida == false)
         {
             var listagem = await _diretorService.ListarNomeId();
             ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
-
             return View(filme);
         }
 
-        await _filmesService.EditarFilme(filme,foto);
         return RedirectToAction("index");
     }
 
     [HttpGet]
     public async Task <IActionResult> ExcluirFilme(int id)
     {
-        var entity = await _filmesService.GetById(id);
-        var listagem = await _diretorService.ListarNomeId();
+        var entity = await _filmesService.BuscarId(id);
+        if (entity != null)
+        {
+            var listagem = await _diretorService.ListarNomeId();
 
-        ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
-        return View(entity);
+            ViewBag.ListaDiretores = new SelectList(listagem, "Id", "PrimeiroNome");
+            return View(entity);
+        }
+        return NotFound();
     }
 
     [HttpPost]

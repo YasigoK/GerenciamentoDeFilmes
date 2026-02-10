@@ -2,6 +2,7 @@
 using CatalogoDeFilmes.Application.Services.Interfaces;
 using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using CatalogoDeFilmes.Domain.Entities;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection.Metadata.Ecma335;
 
 namespace CatalogoDeFilmes.Application.Services;
@@ -17,9 +18,6 @@ public class DiretorService : IDiretorService
         _filmesService = filmesService;
     }
 
-
-
-
     public async Task<List<DiretoresModel>> ListarTodos()
     {
         var lista = await _diretoresRepository.Listar();
@@ -29,14 +27,14 @@ public class DiretorService : IDiretorService
             return DiretoresModel.Map(x);
         }).ToList();
     }
+
     public async Task<List<DiretoresModel>> ListarNomeId()
     {
         var entity = await _diretoresRepository.Listar();
         return entity.Select(x => new DiretoresModel
         {
             Id = x.Id,
-            PrimeiroNome = $"{x.PrimeiroNome} {x.Sobrenome}",
-            DataDeNascimento = x.DataDeNascimento
+            PrimeiroNome = $"{x.PrimeiroNome} {x.Sobrenome}"
         }).ToList();
 
 
@@ -44,24 +42,31 @@ public class DiretorService : IDiretorService
 
     public async Task<bool> CadastrarDiretor(DiretoresModel diretor)
     {
-        var entity = new DiretoresEntity(diretor.PrimeiroNome, diretor.Sobrenome, diretor.DataDeNascimento, diretor.Nacionalidade, diretor.Sexo);
-        //validação
+        var validar = _validarFormularioDiretor(diretor);
 
-        //continua
+        if (validar.Any())
+        {
+            diretor.OperacaoValida = false;
+            diretor.errorMsg.AddRange(validar);
+            return false;
+        }
+
+        var entity = new DiretoresEntity(diretor.PrimeiroNome, diretor.Sobrenome, diretor.DataDeNascimento, diretor.Nacionalidade, diretor.Sexo);
+
         _diretoresRepository.CadastrarDiretor(entity);
         await _diretoresRepository.Salvar();
 
         return true;
     }
 
-    public async Task<DiretoresModel> GetById(int id)
+    public async Task<DiretoresModel> BuscarId(int id)
     {
-        var diretor = await _diretoresRepository.GetId(id);
+        var diretor = await _diretoresRepository.BuscarId(id);
         return DiretoresModel.Map(diretor);
     }
     public async Task<bool> EditarDiretor(DiretoresModel diretor)
     {
-        var entity = await _diretoresRepository.GetId(diretor.Id);
+        var entity = await _diretoresRepository.BuscarId(diretor.Id);
         if (entity != null)
         {
             entity.Atualizar(diretor.PrimeiroNome, diretor.Sobrenome, diretor.DataDeNascimento, diretor.Nacionalidade, diretor.Sexo);
@@ -73,7 +78,7 @@ public class DiretorService : IDiretorService
 
     public async Task<bool> DeletarDiretor(DiretoresModel diretor)
     {
-        var entity = await _diretoresRepository.GetId(diretor.Id);
+        var entity = await _diretoresRepository.BuscarId(diretor.Id);
         if (entity == null)
         {
             return false;
@@ -96,5 +101,31 @@ public class DiretorService : IDiretorService
         _diretoresRepository.Delete(entity);
         await _diretoresRepository.Salvar();
         return true;
+    }
+
+
+    private List<string> _validarFormularioDiretor(DiretoresModel diretor)
+    {
+        var erros = new List<string>();
+
+        if(diretor.PrimeiroNome.IsNullOrEmpty())
+            erros.Add("Nome invalido, insira um valor que não seja vazio");
+
+        if(diretor.Sobrenome.IsNullOrEmpty())
+            erros.Add("Sobrenome invalido, valor vazio");
+
+        if(diretor.DataDeNascimento > DateTime.Today)
+            erros.Add("Data invalida, data no futuro");
+
+        if(diretor.DataDeNascimento == DateTime.MinValue)
+            erros.Add("Data invalida, valor nulo");
+
+        if (diretor.DataDeNascimento < DateTime.Today.AddYears(-18))
+            erros.Add("Idade invalida, diretor deve ser maior que 18 anos");
+
+        if (diretor.Nacionalidade.IsNullOrEmpty())
+            erros.Add("Nacionalidade invalida, adicione um valor não vazio");
+
+        return erros;
     }
 }

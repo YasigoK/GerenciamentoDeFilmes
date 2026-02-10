@@ -23,7 +23,7 @@ public class DiretoresRepository : IDiretoresRepository
     {
         await _db.SaveChangesAsync();
     }
-    public async Task<DiretoresEntity> GetId(int id)
+    public async Task<DiretoresEntity> BuscarId(int id)
     {
         return await _db.Diretores.Include(d=>d.Filmes).FirstOrDefaultAsync(x => x.Id == id);
     }

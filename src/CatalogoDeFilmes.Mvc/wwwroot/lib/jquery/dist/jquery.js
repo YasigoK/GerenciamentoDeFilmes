@@ -1152,7 +1152,7 @@ function setDocument( node ) {
 	// Check if getElementById returns elements by name
 	// The broken getElementById methods don't pick up programmatically-set names,
 	// so use a roundabout getElementsByName test
-	support.getById = assert( function( el ) {
+	support.BuscarId = assert( function( el ) {
 		documentElement.appendChild( el ).id = jQuery.expando;
 		return !document.getElementsByName ||
 			!document.getElementsByName( jQuery.expando ).length;
@@ -1190,7 +1190,7 @@ function setDocument( node ) {
 	} );
 
 	// ID filter and find
-	if ( support.getById ) {
+	if ( support.BuscarId ) {
 		Expr.filter.ID = function( id ) {
 			var attrId = id.replace( runescape, funescape );
 			return function( elem ) {

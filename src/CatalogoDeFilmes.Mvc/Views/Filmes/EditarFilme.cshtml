@@ -8,6 +8,19 @@
         <h1 class="text-light">Edição de Filme</h1>
 
     </div>
+    @if (Model?.errorMsg != null && Model.errorMsg.Any())
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach (var erro in Model.errorMsg)
+                {
+                    <li>@erro</li>
+                }
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
 
     <form method="post" asp-controller="Filmes" asp-action="EditarFilme" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
@@ -61,9 +74,11 @@
             </div>
 
             <div class="col-sm-10">
-                <label for="Imagem" class="form-label text-light">Imagem do Filme</label>
+                <label for="Imagem" class="form-label text-light">Imagem do filme (opcional)</label>
                 <input type="file" asp-for="Imagem" id="Imagem" name="foto" class="form-control" />
             </div>
+
+            <span asp-validation-for="Imagem" class="text-danger"></span>
 
         </div>
 
@@ -76,7 +91,7 @@
 
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
-            <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button>
+            <button type="submit" class="btn btn-success w-50">Enviar <i class="bi bi-pen mx-2"></i> </button>
             <a class="btn btn-primary w-50" asp-controller="Filmes" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
 
         </div>

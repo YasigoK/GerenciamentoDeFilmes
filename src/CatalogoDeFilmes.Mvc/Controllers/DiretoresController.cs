@@ -28,7 +28,11 @@ public class DiretoresController : Controller
     [HttpPost]
     public async Task<IActionResult> CadastrarDiretor(DiretoresModel diretor)
     {
-        var entity = await _dirService.CadastrarDiretor(diretor);
+        await _dirService.CadastrarDiretor(diretor);
+        if (diretor.OperacaoValida == false)
+        {
+            return View(diretor);
+        }
 
         return RedirectToAction("Index");
     }
@@ -36,7 +40,7 @@ public class DiretoresController : Controller
     [HttpGet]
     public async Task<IActionResult> ExibirDetalhes(int id)
     {
-        var diretor = await _dirService.GetById(id);
+        var diretor = await _dirService.BuscarId(id);
         return View(diretor);
     }
 
@@ -44,7 +48,7 @@ public class DiretoresController : Controller
     [HttpGet]
     public async Task<IActionResult> EditarDiretor(int Id)
     {
-        var diretor = await _dirService.GetById(Id);
+        var diretor = await _dirService.BuscarId(Id);
         return View(diretor);
     }
 
@@ -60,7 +64,7 @@ public class DiretoresController : Controller
     [HttpGet]
     public async Task<IActionResult> ExcluirDiretor(int id)
     {
-        var diretor = await _dirService.GetById(id); 
+        var diretor = await _dirService.BuscarId(id); 
         return View(diretor);
     }
 

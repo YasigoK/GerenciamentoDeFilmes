@@ -12,7 +12,18 @@
         <h1 class="text-light">Cadastro de Diretor</h1>
 
     </div>
-
+    @if (Model?.errorMsg != null && Model.errorMsg.Any())
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach (var erro in Model.errorMsg)
+                {
+                    <li>@erro</li>
+                }
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
     <form method="post" asp-controller="Diretores" asp-action="CadastrarDiretor">
         <!--NOME-->
         <div class="mb-3">

@@ -12,14 +12,14 @@ namespace CatalogoDeFilmes.Application.Services;
 public class FilmesService :IFilmesService
 {
     private readonly IFilmesRepository _filmesRepository;
-    private readonly IDiretorService _diretorService;
     private readonly IWebHostEnvironment _enviroment;
+    private readonly IDiretoresRepository _diretorRepository;
 
-    public FilmesService(IFilmesRepository filmesRepository, IWebHostEnvironment enviroment, IDiretorService diretorService)
+    public FilmesService(IFilmesRepository filmesRepository,IDiretoresRepository diretoresRepository, IWebHostEnvironment enviroment)
     {
         _filmesRepository = filmesRepository;
         _enviroment = enviroment;
-        _diretorService = diretorService;
+        _diretorRepository = diretoresRepository;
     }
 
 
@@ -33,25 +33,15 @@ public class FilmesService :IFilmesService
     }
     public async Task<bool> CadastrarFilme(FilmesModel filme, IFormFile foto)
     {
-        var validar = await _ValidarFomulario(filme, foto);
-        if (validar.Any()) { 
+        var validar = await _ValidarFomularioFilmes(filme, foto);
+        if (validar.Any()) 
+        {
+            filme.OperacaoValida = false;
             filme.errorMsg.AddRange(validar);
             return false;
         }
-            
 
-        if (foto != null)
-        {
-            string nomeFinalImagem = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(foto.FileName);
-            filme.Imagem = nomeFinalImagem;
-
-            string caminho = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", nomeFinalImagem);
-
-            using (var stream = new FileStream(caminho, FileMode.Create))
-            {
-                await foto.CopyToAsync(stream);
-            }
-        }
+        await _SalvarImagemAsync(filme, foto);
 
         var novoFilme = new FilmesEntity(
             filme.NomeFilme, 
@@ -70,45 +60,35 @@ public class FilmesService :IFilmesService
         return true;
     }
 
-    public async Task<FilmesModel> GetById(int id)
+    public async Task<FilmesModel> BuscarId(int id)
     {
-        var entity = await _filmesRepository.GetId(id);
+        var entity = await _filmesRepository.BuscarId(id);
         return FilmesModel.Map(entity);
     }
 
     public async Task<bool> EditarFilme(FilmesModel filme, IFormFile foto)
     {
-        var modelo = await _filmesRepository.GetId(filme.Id);
+        var validar = await _ValidarFomularioFilmes(filme, foto);
+        if (validar.Any())
+        {
+            filme.OperacaoValida = false;
+            filme.errorMsg.AddRange(validar);
+            return false;
+        }
+
+        var modelo = await _filmesRepository.BuscarId(filme.Id);
         if(modelo == null)
         {
             filme.OperacaoValida = false;
-            filme.errorMsg.Add("Formulario invalido");
+            filme.errorMsg.AddRange("Formulario invalido");
             return false;
         }
 
         if (foto != null)
         {
-
-            if (!string.IsNullOrEmpty(modelo.Imagem))
-            {
-                string caminhoAntigo = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", modelo.Imagem);
-                if (System.IO.File.Exists(caminhoAntigo))
-                {
-                    System.IO.File.Delete(caminhoAntigo);
-                }
-            }
-
-
-            string nomeFinalImagem = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(foto.FileName);
-            filme.Imagem = nomeFinalImagem;
-            string caminho = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", nomeFinalImagem);
-
-            using (var stream = new FileStream(caminho, FileMode.Create))
-            {
-                await foto.CopyToAsync(stream);
-            }
+            await _DeletarSeExistir(filme);
+            await _SalvarImagemAsync(filme, foto);
         }
-
 
         modelo.AtualizarFilme
             (
@@ -128,7 +108,7 @@ public class FilmesService :IFilmesService
 
     public async Task<bool> DeletarFilme(FilmesModel filme)
     {
-        var entity = await _filmesRepository.GetId(filme.Id);
+        var entity = await _filmesRepository.BuscarId(filme.Id);
 
         if (entity == null)
         {
@@ -137,11 +117,7 @@ public class FilmesService :IFilmesService
             return false;
         }
 
-        string caminho = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", filme.Imagem);
-
-        if(System.IO.File.Exists(caminho))  // se o arquivo existir
-            System.IO.File.Delete(caminho);
-        
+        await _DeletarSeExistir(filme);
 
         _filmesRepository.Delete(entity);
         await _filmesRepository.Salvar();
@@ -149,62 +125,76 @@ public class FilmesService :IFilmesService
         return true;
     }
 
+    private async Task _SalvarImagemAsync(FilmesModel filme, IFormFile foto)
+    {
+        var nomeFinalImagem = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(foto.FileName);
 
+        filme.Imagem = nomeFinalImagem;
 
-private async Task<List<string>> _ValidarFomulario(FilmesModel filme, IFormFile foto)
+        var caminho = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", nomeFinalImagem);
+
+        using var stream = new FileStream(caminho, FileMode.Create);
+        await foto.CopyToAsync(stream);
+    }
+
+    private async Task _DeletarSeExistir(FilmesModel filme)
+    {
+        if (!string.IsNullOrEmpty(filme.Imagem))
+        {
+            string caminhoAntigo = Path.Combine(_enviroment.WebRootPath, "imgs", "cartazes", filme.Imagem);
+            if (System.IO.File.Exists(caminhoAntigo))
+            {
+                System.IO.File.Delete(caminhoAntigo);
+            }
+        }
+    }
+
+    private async Task<List<string>> _ValidarFomularioFilmes(FilmesModel filme, IFormFile foto)
     {
         var erros = new List<string>();
 
         if (filme.NomeFilme.IsNullOrEmpty())
-        {
-            erros.Add("Nome invalido, insira um valor que nÃo seja vazio");
-            filme.OperacaoValida = false;
-        }
+            erros.Add("Nome invalido, insira um valor que não seja vazio");
+
 
         if (filme.Genero.IsNullOrEmpty())
-        {
             erros.Add("Genero invalido, valor vazio");
-            filme.OperacaoValida = false;
-        }
+        
 
         if(filme.DataLancamento > DateTime.Today )
-        {
             erros.Add("Data invalida, data no futuro");
-            filme.OperacaoValida = false;
-        }
+
 
         if (filme.DataLancamento< new DateTime(1895, 12, 28))
-        {
             erros.Add("Data invalida, data anterior ao primeiro filme registrado");
-            filme.OperacaoValida = false;
-        }
 
-        if ( foto == null || foto.Length==0)
-        {
+
+        if (filme.Imagem == null && (foto == null || foto.Length == 0))
             erros.Add("Nenhum arquivo foi enviado");
-            filme.OperacaoValida = false;
-        }
 
-        if (filme.DiretorId_Fk != 0)
+        if(foto!= null && foto.Length>0)
         {
-            var diretor = await _diretorService.GetById(filme.DiretorId_Fk);
-            if (diretor != null && filme.DataLancamento < diretor.DataDeNascimento) {
-                    erros.Add("Data invalida, o filme foi lançado antes do diretor nascer");
-                    filme.OperacaoValida=false;
+            var tiposPermitidos = new[] { "image/jpeg", "image/png", "image/webp" };
+
+            if (!tiposPermitidos.Contains(foto.ContentType))
+            {
+                erros.Add("Extensão de imagem invalida envie um Png, Jpeg ou Webp");
             }
-        }
 
-        if(filme.Duracao <= 0)
-        {
-            erros.Add("Nota invalida, valor entre 1 e 10");
-            filme.OperacaoValida = false;
         }
+        
+        var diretor = await _diretorRepository.BuscarId(filme.DiretorId_Fk);
+        if (diretor != null && filme.DataLancamento < diretor.DataDeNascimento)
+            erros.Add("Data invalida, o filme foi lançado antes do diretor nascer");
+
+
+        if (filme.Duracao <= 0)
+            erros.Add("Duração invalida, valor entre 1 e 10");
+
 
         if(filme.Nota>10|| filme.Nota < 1)
-        {
             erros.Add("Nota invalida, valor entre 1 e 10");
-            filme.OperacaoValida = false;
-        }
+
 
         return erros;
 
