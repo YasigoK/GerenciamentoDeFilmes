@@ -12,12 +12,14 @@ namespace CatalogoDeFilmes.Application.Services;
 public class FilmesService :IFilmesService
 {
     private readonly IFilmesRepository _filmesRepository;
+    private readonly IDiretorService _diretorService;
     private readonly IWebHostEnvironment _enviroment;
 
-    public FilmesService(IFilmesRepository filmesRepository, IWebHostEnvironment enviroment)
+    public FilmesService(IFilmesRepository filmesRepository, IWebHostEnvironment enviroment, IDiretorService diretorService)
     {
         _filmesRepository = filmesRepository;
         _enviroment = enviroment;
+        _diretorService = diretorService;
     }
 
 
@@ -31,9 +33,12 @@ public class FilmesService :IFilmesService
     }
     public async Task<bool> CadastrarFilme(FilmesModel filme, IFormFile foto)
     {
-        var validar =_ValidarFomulario(filme, foto);
-        if(validar ==false)
+        var validar = await _ValidarFomulario(filme, foto);
+        if (validar.Any()) { 
+            filme.errorMsg.AddRange(validar);
             return false;
+        }
+            
 
         if (foto != null)
         {
@@ -146,66 +151,63 @@ public class FilmesService :IFilmesService
 
 
 
-   private bool _ValidarFomulario(FilmesModel filme, IFormFile foto)
+private async Task<List<string>> _ValidarFomulario(FilmesModel filme, IFormFile foto)
     {
-        //Nome
+        var erros = new List<string>();
+
         if (filme.NomeFilme.IsNullOrEmpty())
         {
-            filme.errorMsg.Add("Nome vazio");
+            erros.Add("Nome invalido, insira um valor que nÃo seja vazio");
             filme.OperacaoValida = false;
         }
 
-        //Genero
         if (filme.Genero.IsNullOrEmpty())
         {
-            filme.errorMsg.Add("Genero vazio");
+            erros.Add("Genero invalido, valor vazio");
             filme.OperacaoValida = false;
         }
 
-        //Data no futuro ou valor minimo
-        if(filme.DataLancamento > DateTime.Today ||filme.DataLancamento == DateTime.MinValue)
+        if(filme.DataLancamento > DateTime.Today )
         {
-            filme.errorMsg.Add("Data invalida, data no futuro");
+            erros.Add("Data invalida, data no futuro");
             filme.OperacaoValida = false;
         }
 
-        //Data antes do diretor
-        //if(filme.DataLancamento<filme)
-
-
-        //Imagem
-        if ( foto == null)
+        if (filme.DataLancamento< new DateTime(1895, 12, 28))
         {
-            filme.errorMsg.Add("Nenhum arquivo foi enviado");
+            erros.Add("Data invalida, data anterior ao primeiro filme registrado");
             filme.OperacaoValida = false;
         }
 
-        //Diretor
-        if (filme.DiretorId_Fk == 0 )
+        if ( foto == null || foto.Length==0)
         {
-            filme.errorMsg.Add("É necessário a seleção e um diretor para o filme");
+            erros.Add("Nenhum arquivo foi enviado");
             filme.OperacaoValida = false;
         }
 
-        //Duração
-        if(filme.Duracao < 1)
+        if (filme.DiretorId_Fk != 0)
         {
-            filme.errorMsg.Add("Nota invalida, valor entre 1 e 10");
+            var diretor = await _diretorService.GetById(filme.DiretorId_Fk);
+            if (diretor != null && filme.DataLancamento < diretor.DataDeNascimento) {
+                    erros.Add("Data invalida, o filme foi lançado antes do diretor nascer");
+                    filme.OperacaoValida=false;
+            }
+        }
+
+        if(filme.Duracao <= 0)
+        {
+            erros.Add("Nota invalida, valor entre 1 e 10");
             filme.OperacaoValida = false;
         }
 
-        //Nota
         if(filme.Nota>10|| filme.Nota < 1)
         {
-            filme.errorMsg.Add("Nota invalida, valor entre 1 e 10");
+            erros.Add("Nota invalida, valor entre 1 e 10");
             filme.OperacaoValida = false;
         }
 
-        if (filme.OperacaoValida == false)
-        {
-            return false;
-        }
-        return true;
+        return erros;
+
     }
 
 }
