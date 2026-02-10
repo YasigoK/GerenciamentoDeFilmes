@@ -3,7 +3,6 @@ using CatalogoDeFilmes.Application.Services.Interfaces;
 using CatalogoDeFilmes.Data.Repositories.Interfaces;
 using CatalogoDeFilmes.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
-using System.Reflection.Metadata.Ecma335;
 
 namespace CatalogoDeFilmes.Application.Services;
 
@@ -120,7 +119,7 @@ public class DiretorService : IDiretorService
         if(diretor.DataDeNascimento == DateTime.MinValue)
             erros.Add("Data invalida, valor nulo");
 
-        if (diretor.DataDeNascimento < DateTime.Today.AddYears(-18))
+        if (diretor.DataDeNascimento > DateTime.Today.AddYears(-18))
             erros.Add("Idade invalida, diretor deve ser maior que 18 anos");
 
         if (diretor.Nacionalidade.IsNullOrEmpty())
